@@ -6,7 +6,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # React frontend
+    allow_origins=["*"],  # React frontend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -18,3 +18,4 @@ app.include_router(router)
 @app.get("/")
 def home():
     return {"message": "FastAPI Backend Running"}
+
