@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "backend/**"   # ✅ only backend changes trigger deploy
+      - "Rolebasedapi/backend/**"   # ✅ only backend changes trigger deploy
 
 jobs:
   deploy-backend:
