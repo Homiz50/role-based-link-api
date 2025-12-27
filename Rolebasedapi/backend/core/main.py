@@ -18,5 +18,3 @@ app.include_router(router)
 @app.get("/")
 def home():
     return {"message": "FastAPI Backend Running"}
-
-print("CI/CD is done.")
