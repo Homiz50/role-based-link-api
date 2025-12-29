@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "Rolebasedapi/backend/**"   # ✅ only backend changes trigger deploy
+    # paths:
+    #   - "Rolebasedapi/backend/**"   # temporarily disable
 
 jobs:
   deploy-backend:
@@ -29,7 +29,12 @@ jobs:
             git pull origin main
 
             echo "Entering backend folder"
-            cd backend
+            cd Rolebasedapi/backend
+
+            echo "Creating virtual environment if missing"
+            if [ ! -d "venv" ]; then
+              python3 -m venv venv
+            fi
 
             echo "Activating virtual environment"
             source venv/bin/activate
