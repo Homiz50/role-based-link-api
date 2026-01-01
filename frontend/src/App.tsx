@@ -7,13 +7,12 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
-        <div className="animate-pulse text-gray-600">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
       </div>
     );
   }
 
-  // ✅ If JWT exists → show app, else show login
   return profile ? <MainApp /> : <Login />;
 }
 
@@ -26,4 +25,3 @@ function App() {
 }
 
 export default App;
-

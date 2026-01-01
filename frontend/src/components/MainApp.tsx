@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Dashboard } from "./Dashboard";
-import { LinkManagement } from "./LinkManagement";
 import { SubUserManagement } from "./SubUserManagement";
 import { RecordsManager } from "./RecordsManager";
 
@@ -10,17 +9,15 @@ import {
   LayoutDashboard,
   Link as LinkIcon,
   Users,
-  Database
+  Database,
 } from "lucide-react";
 
 export function MainApp() {
   const { profile } = useAuth();
   const [activeTab, setActiveTab] = useState("dashboard");
 
-  // ✅ FIXED ROLE CHECK (FASTAPI USES "main" & "sub")
   const isMainUser = profile?.role === "main";
 
-  // ✅ JWT LOGOUT
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
@@ -29,7 +26,7 @@ export function MainApp() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* ✅ NAVBAR */}
+      {/* NAVBAR */}
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -52,7 +49,7 @@ export function MainApp() {
 
               <button
                 onClick={handleSignOut}
-                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition"
+                className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg"
               >
                 <LogOut className="w-4 h-4" />
                 Sign Out
@@ -62,13 +59,13 @@ export function MainApp() {
         </div>
       </nav>
 
-      {/* ✅ TABS */}
+      {/* TABS */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-wrap gap-4 mb-8">
-          {/* ✅ DASHBOARD */}
+          {/* DASHBOARD */}
           <button
             onClick={() => setActiveTab("dashboard")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium ${
               activeTab === "dashboard"
                 ? "bg-blue-600 text-white"
                 : "bg-white text-gray-700 hover:bg-gray-50"
@@ -78,54 +75,40 @@ export function MainApp() {
             Dashboard
           </button>
 
+          {/* SUB USERS (MAIN ONLY) */}
           {isMainUser && (
-            <>
-              {/* ✅ LINK MANAGEMENT */}
-              <button
-                onClick={() => setActiveTab("links")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
-                  activeTab === "links"
-                    ? "bg-blue-600 text-white"
-                    : "bg-white text-gray-700 hover:bg-gray-50"
-                }`}
-              >
-                <LinkIcon className="w-4 h-4" />
-                Manage Links
-              </button>
+            <button
+              onClick={() => setActiveTab("subusers")}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium ${
+                activeTab === "subusers"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              <Users className="w-4 h-4" />
+              Sub-Users
+            </button>
+          )}
 
-              {/* ✅ SUB USERS */}
-              <button
-                onClick={() => setActiveTab("subusers")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
-                  activeTab === "subusers"
-                    ? "bg-blue-600 text-white"
-                    : "bg-white text-gray-700 hover:bg-gray-50"
-                }`}
-              >
-                <Users className="w-4 h-4" />
-                Sub-Users
-              </button>
-
-              {/* ✅ ✅ ✅ RECORDS TAB (THIS WAS MISSING) */}
-              <button
-                onClick={() => setActiveTab("records")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
-                  activeTab === "records"
-                    ? "bg-blue-600 text-white"
-                    : "bg-white text-gray-700 hover:bg-gray-50"
-                }`}
-              >
-                <Database className="w-4 h-4" />
-                Records
-              </button>
-            </>
+          {/* RECORDS (MAIN ONLY) */}
+          {isMainUser && (
+            <button
+              onClick={() => setActiveTab("records")}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium ${
+                activeTab === "records"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              <Database className="w-4 h-4" />
+              Records
+            </button>
           )}
         </div>
 
-        {/* ✅ TAB CONTENT AREA */}
+        {/* TAB CONTENT */}
         <div>
           {activeTab === "dashboard" && <Dashboard />}
-          {activeTab === "links" && isMainUser && <LinkManagement />}
           {activeTab === "subusers" && isMainUser && <SubUserManagement />}
           {activeTab === "records" && isMainUser && <RecordsManager />}
         </div>
@@ -133,3 +116,4 @@ export function MainApp() {
     </div>
   );
 }
+
